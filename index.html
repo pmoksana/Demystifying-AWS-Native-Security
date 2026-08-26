@@ -1,19 +1,23 @@
- <!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Qalea AI | Intelligent Quality Assurance & Testing</title>
+  <title>Cloud Defense Native: Master Enterprise Security with AWS Integrated Stack</title>
   <style>
     :root {
       --bg-dark: #07090e;
-      --card-bg: rgba(18, 24, 38, 0.7);
+      --card-bg: rgba(18, 24, 38, 0.75);
       --card-border: rgba(255, 255, 255, 0.08);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
+      
+      /* Qalea AI Glows & AWS Palette */
       --accent-cyan: #00f0ff;
       --accent-purple: #8b5cf6;
-      --glow: rgba(0, 240, 255, 0.15);
+      --aws-amber: #ff9900;
+      --alert-red: #ff4d4d;
+      --success-green: #00e676;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,204 +26,240 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-dark);
       color: var(--text-main);
-      line-height: 1.6;
-      overflow-x: hidden;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Ambient Background Glows */
+    /* Qalea Ambient Radial Background Glow */
     .glow-bg {
       position: fixed;
-      top: -200px;
+      top: -150px;
       left: 50%;
       transform: translateX(-50%);
-      width: 800px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, rgba(0, 240, 255, 0.1) 40%, transparent 70%);
-      filter: blur(80px);
-      z-index: -1;
+      width: 900px;
+      height: 550px;
+      background: radial-gradient(circle, rgba(255, 153, 0, 0.15) 0%, rgba(139, 92, 246, 0.12) 40%, rgba(0, 240, 255, 0.05) 60%, transparent 80%);
+      filter: blur(90px);
+      z-index: 0;
       pointer-events: none;
     }
 
-    /* Header & Navigation */
+    /* Qalea Glassmorphism Navbar */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.25rem 5%;
-      backdrop-filter: blur(12px);
-      background: rgba(7, 9, 14, 0.7);
+      padding: 1rem 5%;
+      background: rgba(7, 9, 14, 0.8);
+      backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--card-border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      position: relative;
+      z-index: 10;
     }
 
     .logo {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       font-weight: 800;
       letter-spacing: -0.5px;
-      background: linear-gradient(90deg, #fff, var(--accent-cyan));
+      background: linear-gradient(90deg, #fff, var(--aws-amber));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    nav { display: flex; gap: 2rem; }
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.95rem;
-      transition: color 0.3s ease;
-    }
-    nav a:hover { color: var(--text-main); }
-
-    .btn-cta {
-      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-      color: #000;
-      font-weight: 700;
-      padding: 0.6rem 1.4rem;
-      border-radius: 30px;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .btn-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 20px rgba(0, 240, 255, 0.4);
-    }
-
-    /* Hero Section */
-    .hero {
-      text-align: center;
-      padding: 6rem 1rem 4rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      background: rgba(0, 240, 255, 0.08);
-      border: 1px solid rgba(0, 240, 255, 0.2);
-      color: var(--accent-cyan);
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-    }
-
-    h1 {
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 1.5rem;
-      letter-spacing: -1px;
-    }
-
-    h1 span {
-      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      font-size: 1.2rem;
-      color: var(--text-muted);
-      margin-bottom: 2.5rem;
-    }
-
-    /* Dashboard Mockup / Feature Showcase */
-    .showcase {
-      max-width: 1100px;
-      margin: 0 auto 6rem;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(10px);
-    }
-
-    .tabs {
+    .nav-controls {
       display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
+      align-items: center;
+      gap: 1.5rem;
     }
 
-    .tab-btn {
-      background: transparent;
+    .btn-nav {
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
+      color: var(--text-main);
+      padding: 0.5rem 1.2rem;
+      border-radius: 30px;
       cursor: pointer;
       font-weight: 600;
       transition: all 0.3s ease;
     }
 
-    .tab-btn.active, .tab-btn:hover {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-main);
+    .btn-nav:hover {
+      background: rgba(0, 240, 255, 0.1);
       border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
     }
 
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    /* Cards Grid */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      max-width: 1100px;
-      margin: 0 auto 6rem;
-      padding: 0 1rem;
+    .slide-counter {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 600;
     }
 
-    .card {
+    /* Main Deck Stage */
+    .deck-container {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 3rem 8%;
+      opacity: 0;
+      transform: translateY(15px) scale(0.99);
+      pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    /* Typography */
+    .badge {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
+      background: rgba(255, 153, 0, 0.08);
+      border: 1px solid rgba(255, 153, 0, 0.25);
+      color: var(--aws-amber);
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      width: fit-content;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+
+    h1 span {
+      background: linear-gradient(90deg, var(--aws-amber), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 800px;
+    }
+
+    /* Qalea Glowing Cards */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; width: 100%; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; width: 100%; }
+    .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; width: 100%; }
+
+    .qalea-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 2rem;
-      transition: border-color 0.3s ease, transform 0.3s ease;
+      border-radius: 14px;
+      padding: 1.8rem;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s ease;
+      position: relative;
     }
 
-    .card:hover {
-      border-color: rgba(0, 240, 255, 0.4);
-      transform: translateY(-4px);
+    .qalea-card:hover {
+      border-color: rgba(0, 240, 255, 0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 240, 255, 0.1);
     }
 
-    .card-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 10px;
-      background: rgba(0, 240, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent-cyan);
-      font-weight: bold;
-      margin-bottom: 1.2rem;
-    }
-
-    .card h3 {
-      font-size: 1.3rem;
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--aws-amber);
       margin-bottom: 0.8rem;
     }
 
-    .card p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
+    .card-title.cyan { color: var(--accent-cyan); }
+    .card-title.red { color: var(--alert-red); }
+    .card-title.green { color: var(--success-green); }
+
+    ul { list-style: none; }
+    li {
+      margin-bottom: 0.7rem;
+      position: relative;
+      padding-left: 1.2rem;
+      color: var(--text-main);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    li::before {
+      content: "▹";
+      position: absolute;
+      left: 0;
+      color: var(--accent-cyan);
     }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 3rem;
-      border-top: 1px solid var(--card-border);
-      color: var(--text-muted);
-      font-size: 0.9rem;
+    /* Workflows & Timelines */
+    .flow-chain { display: flex; flex-direction: column; gap: 1rem; width: 100%; }
+    .flow-step {
+      display: flex;
+      align-items: center;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.2rem 1.6rem;
+      gap: 1.5rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .step-badge {
+      background: linear-gradient(135deg, var(--aws-amber), var(--accent-purple));
+      color: #000;
+      font-weight: 800;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+    }
+    th, td { padding: 1.1rem 1.4rem; text-align: left; }
+    th { background: rgba(255, 255, 255, 0.03); color: var(--accent-cyan); font-weight: 700; }
+    td { border-top: 1px solid var(--card-border); color: var(--text-main); }
+
+    /* Framework Badges */
+    .badge-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+    .framework-badge {
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      color: var(--accent-cyan);
+      padding: 0.8rem 1.4rem;
+      border-radius: 30px;
+      font-weight: 600;
     }
   </style>
 </head>
@@ -228,79 +268,382 @@
   <div class="glow-bg"></div>
 
   <header>
-    <div class="logo">Qalea AI</div>
-    <nav>
-      <a href="#soluciones">Soluciones</a>
-      <a href="#caracteristicas">Características</a>
-      <a href="#plataforma">Plataforma</a>
-    </nav>
-    <a href="#" class="btn-cta">Solicitar Demo</a>
+    <div class="logo">CLOUD DEFENSE NATIVE</div>
+    <div class="nav-controls">
+      <button class="btn-nav" onclick="navigate(-1)">❮ Anterior</button>
+      <span class="slide-counter" id="counter">1 / 16</span>
+      <button class="btn-nav" onclick="navigate(1)">Siguiente ❯</button>
+    </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="badge">Inteligencia Artificial para Control de Calidad</div>
-      <h1>Optimiza la garantía de calidad con <span>Testing Autónomo</span></h1>
-      <p>Automatización inteligente de pruebas, detección temprana de errores y optimización continua de software impulsada por IA.</p>
-      <a href="#" class="btn-cta" style="font-size: 1.1rem; padding: 0.8rem 2rem;">Empezar Ahora</a>
-    </section>
+  <div class="deck-container">
 
-    <section class="showcase">
-      <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('tab1')">Generación de Tests</button>
-        <button class="tab-btn" onclick="switchTab('tab2')">Ejecución Autónoma</button>
-        <button class="tab-btn" onclick="switchTab('tab3')">Análisis Predictivo</button>
+    <!-- SLIDE 1 -->
+    <div class="slide active">
+      <div class="badge">AWS SECURITY ARCHITECTURE</div>
+      <h1>Enterprise Security with <span>AWS-Native Tools</span></h1>
+      <div class="subtitle">SIEM, Vulnerability Scanning, and EDR Without Third-Party Complexity</div>
+      <div class="grid-2">
+        <div class="qalea-card">
+          <div class="card-title">Integrated Ecosystem</div>
+          <p>Moving from complex multi-vendor setups to an integrated AWS native security architecture.</p>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title cyan">Core Objective</div>
+          <p>Achieving central visibility, continuous compliance tracking, and automated real-time threat defense.</p>
+        </div>
       </div>
+    </div>
 
-      <div id="tab1" class="tab-content active">
-        <h3 style="margin-bottom: 1rem;">Creación de Casos de Prueba impulsada por LLMs</h3>
-        <p style="color: var(--text-muted);">Qalea analiza requerimientos de código e historias de usuario para redactar suites de pruebas de integración y extremo a extremo automáticamente.</p>
+    <!-- SLIDE 2 -->
+    <div class="slide">
+      <div class="badge">CORE ARCHITECTURE</div>
+      <h1>The 3 Pillars of Cloud Security Operations</h1>
+      <div class="grid-3" style="margin-top: 1.5rem;">
+        <div class="qalea-card">
+          <div class="card-title">1. SIEM & Central Visibility</div>
+          <p>Aggregating, normalizing, and analyzing log data across all multi-account AWS environments.</p>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title cyan">2. Vulnerability Management</div>
+          <p>Continuously scanning compute, container registries, and code for CVEs and infrastructure drift.</p>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title green">3. EDR & Threat Detection</div>
+          <p>Real-time OS runtime monitoring and machine learning behavioral anomaly detection.</p>
+        </div>
       </div>
+    </div>
 
-      <div id="tab2" class="tab-content">
-        <h3 style="margin-bottom: 1rem;">Orquestación en la Nube</h3>
-        <p style="color: var(--text-muted);">Ejecuta pipelines de prueba paralelos a gran escala sin mantenimiento de infraestructura local.</p>
+    <!-- SLIDE 3 -->
+    <div class="slide">
+      <div class="badge">CENTRALIZED SIEM</div>
+      <h1>AWS SIEM Part 1: AWS Security Hub</h1>
+      <div class="grid-2" style="margin-top: 1rem;">
+        <div class="qalea-card">
+          <div class="card-title">Key Capabilities</div>
+          <ul>
+            <li><strong>Single Pane of Glass:</strong> Collects, normalizes, and aggregates alerts across accounts.</li>
+            <li><strong>Automated Standards:</strong> Evaluates posture against CIS Benchmarks and PCI-DSS automatically.</li>
+          </ul>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title cyan">Value to Squads</div>
+          <ul>
+            <li>Eliminates context-switching between disparate third-party vendor consoles.</li>
+            <li>Standardizes findings using AWS Security Finding Format (ASFF).</li>
+            <li>Enables ISO 27001 / SOC 2 continuous audit readiness.</li>
+          </ul>
+        </div>
       </div>
+    </div>
 
-      <div id="tab3" class="tab-content">
-        <h3 style="margin-bottom: 1rem;">Reportes Predictivos de Regresión</h3>
-        <p style="color: var(--text-muted);">Identifica módulos de alto riesgo antes del despliegue mediante algoritmos de correlación de errores.</p>
+    <!-- SLIDE 4 -->
+    <div class="slide">
+      <div class="badge">FORENSICS & ANALYTICS</div>
+      <h1>AWS SIEM Part 2: Amazon Detective & OpenSearch</h1>
+      <div class="grid-2" style="margin-top: 1rem;">
+        <div class="qalea-card">
+          <div class="card-title">Amazon Detective</div>
+          <ul>
+            <li><strong>Root-Cause Analysis:</strong> Automatically maps event chains across VPC Flow Logs & CloudTrail.</li>
+            <li><strong>Graph-Based Visualization:</strong> Visualizes blast radius between compromised IPs and IAM roles.</li>
+          </ul>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title cyan">SIEM on AWS OpenSearch</div>
+          <ul>
+            <li><strong>Open-Source Solution:</strong> AWS-published architecture for custom log ingestion pipelines.</li>
+            <li><strong>Deep Correlation:</strong> Long-term data retention and complex forensic security queries.</li>
+          </ul>
+        </div>
       </div>
-    </section>
+    </div>
 
-    <section id="caracteristicas" class="grid">
-      <div class="card">
-        <div class="card-icon">⚡</div>
-        <h3>Pruebas Autosanables</h3>
-        <p>Los scripts de prueba adaptan automáticamente los selectores cuando la interfaz de usuario cambia, reduciendo falsos positivos.</p>
+    <!-- SLIDE 5 -->
+    <div class="slide">
+      <div class="badge">VULNERABILITY SCANNING</div>
+      <h1>Continuous Vulnerability Scanning: Amazon Inspector</h1>
+      <div class="grid-4" style="margin-top: 1rem;">
+        <div class="qalea-card">
+          <div class="card-title">EC2 Instance Scanning</div>
+          <p>Automated software vulnerability (CVE) discovery with zero-agent overhead options.</p>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title cyan">ECR Container Scanning</div>
+          <p>Scans container images on push and continuously monitors stored registry images.</p>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title green">AWS Lambda Functions</div>
+          <p>Scans serverless code and third-party package dependencies for vulnerabilities.</p>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title">Intelligent Risk Scoring</div>
+          <p>Contextualizes risk scores based on real network accessibility and VPC routing analysis.</p>
+        </div>
       </div>
+    </div>
 
-      <div class="card">
-        <div class="card-icon">🔍</div>
-        <h3>Análisis Visual de UI</h3>
-        <p>Detección de discrepancias de diseño pixel por pixel entre maquetas Figma y entornos de pruebas.</p>
+    <!-- SLIDE 6 -->
+    <div class="slide">
+      <div class="badge">COMPLIANCE TRACKING</div>
+      <h1>Continuous Compliance Monitoring: AWS Config</h1>
+      <div class="grid-2" style="margin-top: 1rem;">
+        <div class="qalea-card">
+          <div class="card-title">How It Works</div>
+          <ul>
+            <li><strong>Resource Tracking:</strong> Records detailed configuration history of every AWS asset.</li>
+            <li><strong>Drift Detection:</strong> Flags unauthorized changes violating infrastructure-as-code baselines.</li>
+          </ul>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title cyan">Common Managed Rules</div>
+          <ul>
+            <li>Enforce S3 Bucket Private Access (Block public read/write).</li>
+            <li>Ensure MFA enabled on root and privileged IAM accounts.</li>
+            <li>Verify EBS volume encryption at rest across all regions.</li>
+          </ul>
+        </div>
       </div>
+    </div>
 
-      <div class="card">
-        <div class="card-icon">🚀</div>
-        <h3>Integración CI/CD</h3>
-        <p>Conexión nativa con GitHub Actions, GitLab CI y Jenkins para bloqueos automáticos en Pull Requests.</p>
+    <!-- SLIDE 7 -->
+    <div class="slide">
+      <div class="badge">THREAT DETECTION</div>
+      <h1>EDR & Continuous Threat Detection: Amazon GuardDuty</h1>
+      <div class="grid-3" style="margin-top: 1rem;">
+        <div class="qalea-card">
+          <div class="card-title">Intelligent Analysis</div>
+          <p>Uses Machine Learning and threat intelligence feeds to analyze native AWS data streams.</p>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title cyan">Multi-Layer Scope</div>
+          <p>Monitors CloudTrail events, VPC Flow Logs, DNS logs, S3 access, and IAM activity.</p>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title green">Anomaly Detection</div>
+          <p>Catches compromised credentials, data exfiltration, and unauthorized API calls in real time.</p>
+        </div>
       </div>
-    </section>
-  </main>
+    </div>
 
-  <footer>
-    <p>&copy; 2026 Qalea AI. Todos los derechos reservados.</p>
-  </footer>
+    <!-- SLIDE 8 -->
+    <div class="slide">
+      <div class="badge">RUNTIME EDR</div>
+      <h1>GuardDuty Runtime Monitoring</h1>
+      <div class="grid-2" style="margin-top: 1rem;">
+        <div class="qalea-card">
+          <div class="card-title">Workload Scope</div>
+          <ul>
+            <li><strong>EKS & Kubernetes:</strong> Monitors container-level runtime file, process, and network connections.</li>
+            <li><strong>EC2 & Serverless:</strong> Lightweight agent tracking operating system behavior.</li>
+          </ul>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title cyan">Capabilities</div>
+          <ul>
+            <li>Detects reverse shell execution, privilege escalation, and unauthorized process spawning.</li>
+            <li>Operates as a native lightweight EDR agent without heavy EC2 performance overhead.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9 -->
+    <div class="slide">
+      <div class="badge">OPERATIONAL PIPELINE</div>
+      <h1>The Integrated AWS Security Stack Workflow</h1>
+      <div class="flow-chain" style="margin-top: 1.5rem;">
+        <div class="flow-step">
+          <div class="step-badge">1</div>
+          <div>
+            <div class="card-title green">Stage 1: Proactive Defense (Amazon Inspector)</div>
+            <p>Continuously scans EC2 instances and ECR images for software CVEs and flags unpatched exposure.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-badge">2</div>
+          <div>
+            <div class="card-title red">Stage 2: Active Threat Detection (Amazon GuardDuty)</div>
+            <p>Catches an active exploitation attempt, anomalous network connection, or credential theft in real time.</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="step-badge">3</div>
+          <div>
+            <div class="card-title cyan">Stage 3: Central Response (AWS Security Hub)</div>
+            <p>Correlates both findings into a single prioritized finding and triggers automated remediation rules.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10 -->
+    <div class="slide">
+      <div class="badge">INCIDENT RESPONSE</div>
+      <h1>Incident Investigation Lifecycle in AWS</h1>
+      <div class="flow-chain" style="margin-top: 1rem;">
+        <div class="flow-step">
+          <div class="step-badge">1</div>
+          <p><strong>Alerting:</strong> GuardDuty flags unauthorized API call from an unknown foreign IP address.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-badge">2</div>
+          <p><strong>Aggregation:</strong> Security Hub ingests alert, applies severity score, and triggers EventBridge rule.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-badge">3</div>
+          <p><strong>Investigation:</strong> Engineer opens Amazon Detective to visualize blast radius and impacted IAM roles.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-badge">4</div>
+          <p><strong>Remediation:</strong> Automated AWS Lambda function revokes compromised IAM session keys instantly.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11 -->
+    <div class="slide">
+      <div class="badge">SQUAD RESPONSIBILITIES</div>
+      <h1>Role-Based Operations: Who Does What?</h1>
+      <table style="margin-top: 1.5rem;">
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Daily AWS Security Duty</th>
+            <th>Key Tool Used</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DevOps & Engineers</strong></td>
+            <td>Patch CVEs, fix container dependencies, resolve configuration drift</td>
+            <td>Amazon Inspector & AWS Config</td>
+          </tr>
+          <tr>
+            <td><strong>Project Managers & POs</strong></td>
+            <td>Track compliance posture, prioritize security tech debt</td>
+            <td>AWS Security Hub Dashboards</td>
+          </tr>
+          <tr>
+            <td><strong>SOC & Security Handlers</strong></td>
+            <td>Investigate active alerts, conduct root-cause forensics</td>
+            <td>GuardDuty & Amazon Detective</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SLIDE 12 -->
+    <div class="slide">
+      <div class="badge">ATTACK SCENARIO 1</div>
+      <h1>Real-World Scenario: S3 Bucket Exfiltration</h1>
+      <div class="grid-2" style="margin-top: 1.5rem;">
+        <div class="qalea-card">
+          <div class="card-title red">Attack Chain</div>
+          <p>Malicious actor steals exposed IAM access key from developer repo $\rightarrow$ Scans S3 buckets $\rightarrow$ Begins downloading sensitive customer datasets.</p>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title green">AWS Native Response</div>
+          <p>GuardDuty detects unusual data access pattern from unrecognized IP $\rightarrow$ Security Hub raises critical alert $\rightarrow$ AWS Config reverts bucket exposure.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 13 -->
+    <div class="slide">
+      <div class="badge">ATTACK SCENARIO 2</div>
+      <h1>Real-World Scenario: Container Compromise</h1>
+      <div class="grid-2" style="margin-top: 1.5rem;">
+        <div class="qalea-card">
+          <div class="card-title red">Attack Chain</div>
+          <p>Unpatched web application vulnerability $\rightarrow$ Attacker gains remote code execution on EKS pod $\rightarrow$ Spawns unauthorized crypto-miner binary.</p>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title green">AWS Native Response</div>
+          <p>Inspector flagged unpatched CVE during build $\rightarrow$ GuardDuty Runtime Monitoring detects unauthorized binary execution inside container pod instantly.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 14 -->
+    <div class="slide">
+      <div class="badge">ROI & ARCHITECTURE</div>
+      <h1>Business Value: Native Stack vs. Third-Party Agents</h1>
+      <div class="grid-2" style="margin-top: 1.5rem;">
+        <div class="qalea-card">
+          <div class="card-title red">Third-Party Tool Sprawl</div>
+          <ul>
+            <li>Complex agent installation and heavy CPU performance impact on compute.</li>
+            <li>High licensing overhead and fragmented vendor management consoles.</li>
+          </ul>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title green">AWS Native Advantage</div>
+          <ul>
+            <li>Agentless options with instant one-click enablement.</li>
+            <li>Unified finding schema (ASFF) with native EventBridge and Lambda automation.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 15 -->
+    <div class="slide">
+      <div class="badge">COMPLIANCE FRAMEWORKS</div>
+      <h1>Standards & Compliance Mapping</h1>
+      <div class="badge-grid" style="margin-top: 2rem;">
+        <div class="framework-badge">ISO/IEC 27001: Automated evidence gathering via Security Hub</div>
+        <div class="framework-badge">SOC 2 Type II: Continuous resource tracking via AWS Config</div>
+        <div class="framework-badge">CIS AWS Foundations: Pre-packaged automated scanning rules</div>
+        <div class="framework-badge">NIST CSF v2.0: Full lifecycle (Identify, Detect, Respond, Protect)</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 16 -->
+    <div class="slide">
+      <div class="badge">SUMMARY</div>
+      <h1>Training Summary & Best Practices for Squads</h1>
+      <div class="grid-2" style="margin-top: 1.5rem;">
+        <div class="qalea-card">
+          <div class="card-title cyan">Key Action Items</div>
+          <ul>
+            <li><strong>Centralize:</strong> Enable Security Hub across all accounts.</li>
+            <li><strong>Scan:</strong> Use Inspector early in CI/CD pipelines.</li>
+            <li><strong>Automate:</strong> Connect GuardDuty findings to EventBridge actions.</li>
+            <li><strong>Investigate:</strong> Use Amazon Detective for rapid root-cause analysis.</li>
+          </ul>
+        </div>
+        <div class="qalea-card">
+          <div class="card-title green">Core Mindset</div>
+          <p style="font-size: 1.25rem; margin-top: 1rem;">"Cloud security is an ongoing automated operational rhythm, not a point-in-time audit."</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
   <script>
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-      
-      event.target.classList.add('active');
-      document.getElementById(tabId).classList.add('active');
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const counterDisplay = document.getElementById('counter');
+
+    function updateDeck() {
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === currentSlide);
+      });
+      counterDisplay.textContent = `${currentSlide + 1} / ${slides.length}`;
     }
+
+    function navigate(dir) {
+      currentSlide = (currentSlide + dir + slides.length) % slides.length;
+      updateDeck();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') navigate(1);
+      if (e.key === 'ArrowLeft') navigate(-1);
+    });
   </script>
 </body>
 </html>
