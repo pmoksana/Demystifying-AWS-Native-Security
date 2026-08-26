@@ -3,771 +3,763 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Demystifying AWS Native Security | Cloud Defense Integrated Stack</title>
+  <title>Cloud Defense Native: Master Enterprise Security with AWS Integrated Stack</title>
   <style>
     :root {
-      --bg-dark: #07090e;
-      --card-bg: rgba(18, 24, 38, 0.75);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --text-main: #f8fafc;
+      --bg-slate: #0b0f19;
+      --card-bg: #161f30;
+      --card-border: #24344d;
+      --text-main: #f0f4f8;
       --text-muted: #94a3b8;
-      
-      /* Qalea AI Glows & AWS Palette */
-      --accent-cyan: #00f0ff;
-      --accent-purple: #8b5cf6;
-      --aws-amber: #ff9900;
+      --aws-orange: #ff9900;
+      --cyber-cyan: #00f0ff;
       --alert-red: #ff4d4d;
       --success-green: #00e676;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-dark);
+      background-color: var(--bg-slate);
       color: var(--text-main);
-      line-height: 1.6;
-      overflow-x: hidden;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Ambient Glow Effects */
-    .glow-bg {
-      position: fixed;
-      top: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 1000px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(255, 153, 0, 0.12) 0%, rgba(139, 92, 246, 0.1) 40%, rgba(0, 240, 255, 0.04) 70%, transparent 100%);
-      filter: blur(100px);
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* Sticky Navigation */
     header {
-      position: sticky;
-      top: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 8%;
-      background: rgba(7, 9, 14, 0.85);
-      backdrop-filter: blur(16px);
+      padding: 1rem 2rem;
+      background: rgba(11, 15, 25, 0.9);
       border-bottom: 1px solid var(--card-border);
-      z-index: 100;
+      z-index: 10;
     }
 
-    .logo {
+    .brand {
       font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      background: linear-gradient(90deg, #fff, var(--aws-amber));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      color: var(--aws-orange);
+      letter-spacing: 0.5px;
     }
 
-    nav { display: flex; gap: 2rem; align-items: center; }
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.9rem;
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    button {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
       font-weight: 600;
-      transition: color 0.3s ease;
-    }
-    nav a:hover { color: var(--accent-cyan); }
-
-    .btn-cta {
-      background: rgba(255, 153, 0, 0.1);
-      border: 1px solid var(--aws-amber);
-      color: var(--aws-amber);
-      padding: 0.5rem 1.2rem;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.85rem;
-      transition: all 0.3s ease;
-    }
-    .btn-cta:hover {
-      background: var(--aws-amber);
-      color: #000;
-      box-shadow: 0 0 20px rgba(255, 153, 0, 0.4);
+      transition: all 0.2s ease;
     }
 
-    /* Page Sections */
-    section {
-      padding: 5rem 8%;
-      position: relative;
-      z-index: 1;
-      max-width: 1400px;
-      margin: 0 auto;
+    button:hover {
+      border-color: var(--cyber-cyan);
+      color: var(--cyber-cyan);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
     }
 
-    /* Hero Section */
-    .hero {
+    .slide-number {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      min-width: 60px;
       text-align: center;
-      padding-top: 6rem;
-      padding-bottom: 4rem;
     }
 
-    .badge {
-      display: inline-block;
-      padding: 0.35rem 1rem;
-      border-radius: 20px;
-      background: rgba(255, 153, 0, 0.08);
-      border: 1px solid rgba(255, 153, 0, 0.25);
-      color: var(--aws-amber);
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
+    .deck-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 2.5rem 4rem;
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
     }
 
     h1 {
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 800;
-      line-height: 1.1;
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 1.4rem;
+      color: var(--cyber-cyan);
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: #ffffff;
       margin-bottom: 1.5rem;
-      letter-spacing: -1px;
+      border-left: 4px solid var(--aws-orange);
+      padding-left: 0.8rem;
     }
 
-    h1 span {
-      background: linear-gradient(90deg, var(--aws-amber), var(--accent-cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-subtitle {
-      font-size: 1.25rem;
+    p {
       color: var(--text-muted);
-      max-width: 800px;
-      margin: 0 auto 3rem auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
     }
 
-    /* Grid Layouts & Glowing Cards */
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; width: 100%; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; width: 100%; }
-    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; width: 100%; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; width: 100%; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; width: 100%; }
+    .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; width: 100%; }
 
-    .qalea-card {
+    /* Clickable Link Cards */
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 2rem;
-      backdrop-filter: blur(12px);
-      transition: all 0.3s ease;
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
       position: relative;
     }
 
-    .qalea-card:hover {
-      border-color: rgba(0, 240, 255, 0.3);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 240, 255, 0.1);
+    .card-link:hover .card {
+      transform: translateY(-5px);
+      border-color: var(--cyber-cyan);
+      box-shadow: 0 8px 20px rgba(0, 240, 255, 0.2);
+    }
+
+    .card-link::after {
+      content: "Explore Page ↗";
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--cyber-cyan);
+      margin-top: 1rem;
     }
 
     .card-title {
       font-size: 1.2rem;
       font-weight: 700;
-      color: var(--aws-amber);
+      color: var(--aws-orange);
       margin-bottom: 0.8rem;
     }
-    .card-title.cyan { color: var(--accent-cyan); }
+
+    .card-title.cyan { color: var(--cyber-cyan); }
     .card-title.red { color: var(--alert-red); }
     .card-title.green { color: var(--success-green); }
 
-    /* Interactive Showcase Tabs */
-    .tab-nav {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
+    ul { list-style-type: none; }
+    li {
+      margin-bottom: 0.8rem;
+      position: relative;
+      padding-left: 1.2rem;
+      color: var(--text-main);
+      font-size: 1.05rem;
+      line-height: 1.5;
     }
-    .tab-btn {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      padding: 0.75rem 1.5rem;
-      border-radius: 30px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: all 0.3s ease;
-    }
-    .tab-btn.active, .tab-btn:hover {
-      background: rgba(0, 240, 255, 0.1);
-      border-color: var(--accent-cyan);
-      color: var(--accent-cyan);
+    li::before {
+      content: "▹";
+      position: absolute;
+      left: 0;
+      color: var(--cyber-cyan);
     }
 
-    .tab-pane { display: none; }
-    .tab-pane.active { display: block; }
-
-    /* Interactive Workflow & Timelines */
-    .flow-chain { display: flex; flex-direction: column; gap: 1rem; width: 100%; }
-    .flow-step {
+    .flow-steps { display: flex; flex-direction: column; gap: 1rem; width: 100%; }
+    .step-card {
       display: flex;
       align-items: center;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 1.25rem 1.75rem;
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
       gap: 1.5rem;
-      backdrop-filter: blur(10px);
     }
-    .step-badge {
-      background: linear-gradient(135deg, var(--aws-amber), var(--accent-purple));
+    .step-num {
+      background: var(--aws-orange);
       color: #000;
       font-weight: 800;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
 
-    /* Tables */
     table {
       width: 100%;
       border-collapse: collapse;
       background: var(--card-bg);
-      border-radius: 12px;
+      border-radius: 8px;
       overflow: hidden;
       border: 1px solid var(--card-border);
     }
-    th, td { padding: 1.2rem 1.5rem; text-align: left; }
-    th { background: rgba(255, 255, 255, 0.03); color: var(--accent-cyan); font-weight: 700; }
-    td { border-top: 1px solid var(--card-border); color: var(--text-main); }
+    th, td { padding: 1rem 1.2rem; text-align: left; }
+    th { background: #111827; color: var(--cyber-cyan); font-weight: 700; border-bottom: 1px solid var(--card-border); }
+    td { border-bottom: 1px solid var(--card-border); color: var(--text-main); }
+    tr:last-child td { border-bottom: none; }
 
-    /* Framework Badges */
-    .badge-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
-    .framework-badge {
-      background: rgba(0, 240, 255, 0.06);
-      border: 1px solid rgba(0, 240, 255, 0.25);
-      color: var(--accent-cyan);
-      padding: 0.8rem 1.4rem;
-      border-radius: 30px;
+    .badge-container { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .badge {
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--cyber-cyan);
+      color: var(--cyber-cyan);
+      padding: 0.6rem 1.2rem;
+      border-radius: 20px;
       font-weight: 600;
-    }
-
-    /* Section Headings */
-    .section-header {
-      margin-bottom: 2.5rem;
-      text-align: center;
-    }
-    .section-header h2 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-    .section-header p {
-      color: var(--text-muted);
-      margin-top: 0.5rem;
-      font-size: 1.05rem;
-    }
-
-    ul { list-style: none; }
-    li {
-      margin-bottom: 0.7rem;
-      position: relative;
-      padding-left: 1.2rem;
-      color: var(--text-main);
-    }
-    li::before {
-      content: "▹";
-      position: absolute;
-      left: 0;
-      color: var(--accent-cyan);
-    }
-
-    footer {
-      border-top: 1px solid var(--card-border);
-      padding: 3rem 8%;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
 
-  <div class="glow-bg"></div>
-
-  <!-- Sticky Top Navigation -->
   <header>
-    <div class="logo">DEMISTIFYING AWS NATIVE SECURITY</div>
-    <nav>
-      <a href="#pillars">Architecture</a>
-      <a href="#stack">Security Stack</a>
-      <a href="#hub-console">Security Hub</a>
-      <a href="#workflows">Operations</a>
-      <a href="#matrix">Squad Matrix</a>
-      <a href="#scenarios">Attack Scenarios</a>
-    </nav>
-    <a href="#matrix" class="btn-cta">Framework Guide</a>
+    <div class="brand">AWS NATIVE SECURITY ARCHITECTURE</div>
+    <div class="nav-controls">
+      <button id="prevBtn" onclick="changeSlide(-1)">❮ Prev</button>
+      <span class="slide-number" id="slideNum">1 / 16</span>
+      <button id="nextBtn" onclick="changeSlide(1)">Next ❯</button>
+    </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="badge">AWS CLOUD SECURITY ARCHITECTURE</div>
-    <h1>Master Enterprise Security with <span>AWS Integrated Stack</span></h1>
-    <p class="hero-subtitle">Eliminate third-party complexity. Achieve centralized SIEM visibility, automated vulnerability scanning, continuous compliance, and real-time EDR across multi-account cloud environments.</p>
-    
-    <div class="grid-2">
-      <div class="qalea-card" style="text-align: left;">
-        <div class="card-title">Legacy Setup Sprawl</div>
-        <p>Complex multi-vendor setups, fragmented agent installations, licensing overhead, and context-switching between disconnected consoles.</p>
+  <div class="deck-container">
+
+    <!-- Slide 1 -->
+    <!-- SLIDE 1A: Executive Overview & Vision -->
+    <div class="slide active">
+      <h1>Enterprise Security with AWS-Native Tools</h1>
+      <div class="subtitle">SIEM, Vulnerability Scanning, and EDR Without Third-Party Complexity</div>
+      
+      <div class="grid-2" style="margin-top: 1.5rem;">
+        <div class="card">
+          <div class="card-title">Ecosystem Integration</div>
+          <p>Moving from complex, multi-vendor setups to an integrated AWS native security ecosystem.</p>
+        </div>
+        <div class="card">
+          <div class="card-title cyan">Core Objective</div>
+          <p>Achieving single-pane visibility, continuous compliance tracking, and automated threat defense.</p>
+        </div>
       </div>
-      <div class="qalea-card" style="text-align: left;">
-        <div class="card-title cyan">The Native Objective</div>
-        <p>Achieving single-pane-of-glass visibility, continuous compliance tracking, and instant automated threat response using built-in AWS engines.</p>
+
+      <div class="card green" style="margin-top: 1.2rem; border-color: var(--success-green);">
+        <div class="card-title green">The Strategic Trade-Off</div>
+        <p style="color: var(--text-main); font-weight: 500;">
+          Moving to an AWS-native security ecosystem trades the heavy administrative burden of managing third-party software for a streamlined, automated, and deeply integrated security pipeline.
+        </p>
       </div>
     </div>
-  </section>
 
-  <!-- Section 1: The 3 Pillars -->
-  <section id="pillars">
-    <div class="section-header">
+    <!-- SLIDE 1B: Tool Mapping (Traditional vs. Native) -->
+    <div class="slide">
+      <h2>The Shift: Multi-Vendor vs. AWS Native Stack</h2>
+      <p style="margin-bottom: 1.2rem;">Replacing fragmented vendor portals with natively connected services:</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Security Domain</th>
+            <th>Traditional Multi-Vendor Setup</th>
+            <th>AWS-Native Integrated Ecosystem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>SIEM & Visibility</strong></td>
+            <td>Splunk, Datadog (Separate log licensing)</td>
+            <td><strong style="color: var(--aws-orange);">AWS Security Hub</strong> + <strong style="color: var(--aws-orange);">Amazon Detective</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Vulnerability Mgmt</strong></td>
+            <td>Tenable Nessus, Qualys (Agent installs)</td>
+            <td><strong style="color: var(--cyber-cyan);">Amazon Inspector</strong> + <strong style="color: var(--cyber-cyan);">AWS Config</strong></td>
+          </tr>
+          <tr>
+            <td><strong>EDR & Threat Detection</strong></td>
+            <td>CrowdStrike Falcon, SentinelOne</td>
+            <td><strong style="color: var(--success-green);">Amazon GuardDuty</strong> (ML & Runtime Monitoring)</td>
+          </tr>
+          <tr>
+            <td><strong>Compliance Tracking</strong></td>
+            <td>Palo Alto Prisma Cloud, Wiz</td>
+            <td><strong style="color: var(--aws-orange);">AWS Security Hub</strong> (Automated Benchmarks)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SLIDE 1A: Executive Overview & Vision -->
+    <div class="slide active">
+      <h1>Enterprise Security with AWS-Native Tools</h1>
+      <div class="subtitle">SIEM, Vulnerability Scanning, and EDR Without Third-Party Complexity</div>
+      
+      <div class="grid-2" style="margin-top: 1.5rem;">
+        <div class="card">
+          <div class="card-title">Ecosystem Integration</div>
+          <p>Moving from complex, multi-vendor setups to an integrated AWS native security ecosystem.</p>
+        </div>
+        <div class="card">
+          <div class="card-title cyan">Core Objective</div>
+          <p>Achieving single-pane visibility, continuous compliance tracking, and automated threat defense.</p>
+        </div>
+      </div>
+
+      <div class="card green" style="margin-top: 1.2rem; border-color: var(--success-green);">
+        <div class="card-title green">The Strategic Trade-Off</div>
+        <p style="color: var(--text-main); font-weight: 500;">
+          Moving to an AWS-native security ecosystem trades the heavy administrative burden of managing third-party software for a streamlined, automated, and deeply integrated security pipeline.
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 1B: Tool Mapping (Traditional vs. Native) -->
+    <div class="slide">
+      <h2>The Shift: Multi-Vendor vs. AWS Native Stack</h2>
+      <p style="margin-bottom: 1.2rem;">Replacing fragmented vendor portals with natively connected services:</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Security Domain</th>
+            <th>Traditional Multi-Vendor Setup</th>
+            <th>AWS-Native Integrated Ecosystem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>SIEM & Visibility</strong></td>
+            <td>Splunk, Datadog (Separate log licensing)</td>
+            <td><strong style="color: var(--aws-orange);">AWS Security Hub</strong> + <strong style="color: var(--aws-orange);">Amazon Detective</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Vulnerability Mgmt</strong></td>
+            <td>Tenable Nessus, Qualys (Agent installs)</td>
+            <td><strong style="color: var(--cyber-cyan);">Amazon Inspector</strong> + <strong style="color: var(--cyber-cyan);">AWS Config</strong></td>
+          </tr>
+          <tr>
+            <td><strong>EDR & Threat Detection</strong></td>
+            <td>CrowdStrike Falcon, SentinelOne</td>
+            <td><strong style="color: var(--success-green);">Amazon GuardDuty</strong> (ML & Runtime Monitoring)</td>
+          </tr>
+          <tr>
+            <td><strong>Compliance Tracking</strong></td>
+            <td>Palo Alto Prisma Cloud, Wiz</td>
+            <td><strong style="color: var(--aws-orange);">AWS Security Hub</strong> (Automated Benchmarks)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SLIDE 1C: Operational Reality (Side-by-Side Comparison) -->
+    <div class="slide">
+      <h2>Operational Reality: How Workflows Change</h2>
+      <div class="grid-2" style="margin-top: 1rem;">
+        
+        <div class="card" style="border-color: var(--alert-red);">
+          <div class="card-title red">Traditional Multi-Vendor Environment</div>
+          <ul>
+            <li><strong>Vendor A (Scanner)</strong> flags an unpatched server on one dashboard.</li>
+            <li>Hours later, <strong>Vendor B (EDR)</strong> catches a suspicious file download on another console.</li>
+            <li><strong>Manual Bottleneck:</strong> Analysts must log into both portals, manually cross-reference IP addresses and timestamps, and correlate alerts by hand.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-color: var(--success-green);">
+          <div class="card-title green">AWS-Native Ecosystem</div>
+          <ul>
+            <li><strong>Amazon Inspector</strong> flags an unpatched vulnerability on an EC2 instance.</li>
+            <li><strong>Amazon GuardDuty</strong> detects active exploitation on that exact server.</li>
+            <li><strong>Automated Pipeline:</strong> <strong>AWS Security Hub</strong> instantly correlates both events into a high-priority alert and triggers an <strong>AWS Lambda</strong> script to isolate the host immediately.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide">
       <h2>The 3 Pillars of Cloud Security Operations</h2>
-      <p>A unified foundation supporting secure enterprise cloud platforms.</p>
-    </div>
-    <div class="grid-3">
-      <div class="qalea-card">
-        <div class="card-title">1. SIEM & Central Visibility</div>
-        <p>Aggregating, normalizing, and analyzing high-volume log data across all organizational accounts into centralized analytics dashboards.</p>
-      </div>
-      <div class="qalea-card">
-        <div class="card-title cyan">2. Vulnerability Management</div>
-        <p>Continuously scanning compute, container registries, serverless functions, and code repositories for CVEs and infrastructure drift.</p>
-      </div>
-      <div class="qalea-card">
-        <div class="card-title green">3. EDR & Threat Detection</div>
-        <p>Real-time OS runtime monitoring, process behavior tracking, and machine learning anomaly detection to stop active breaches.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section 2: Interactive Security Stack Showcase (Tabs) -->
-  <section id="stack">
-    <div class="section-header">
-      <h2>AWS Native Security Engine Showcase</h2>
-      <p>Explore how native services replace legacy third-party tooling.</p>
-    </div>
-
-    <div class="tab-nav">
-      <button class="tab-btn active" onclick="openTab(event, 'tab-siem')">SIEM & Analytics</button>
-      <button class="tab-btn" onclick="openTab(event, 'tab-vuln')">Vulnerability Scanning</button>
-      <button class="tab-btn" onclick="openTab(event, 'tab-edr')">EDR & Threat Detection</button>
-      <button class="tab-btn" onclick="openTab(event, 'tab-config')">Compliance & Drift</button>
-    </div>
-
-    <!-- Tab 1: SIEM -->
-    <div id="tab-siem" class="tab-pane active">
-      <div class="grid-2">
-        <div class="qalea-card">
-          <div class="card-title">Amazon Detective</div>
-          <ul>
-            <li><strong>Root-Cause Analysis:</strong> Automatically maps complex event chains across VPC Flow Logs, CloudTrail, and GuardDuty.</li>
-            <li><strong>Graph Visualization:</strong> Visualizes blast radius between compromised IP addresses, IAM roles, and EC2 instances.</li>
-          </ul>
-        </div>
-        <div class="qalea-card">
-          <div class="card-title cyan">SIEM on AWS OpenSearch</div>
-          <ul>
-            <li><strong>Open-Source Architecture:</strong> AWS-published architecture for full custom log ingestion pipelines.</li>
-            <li><strong>Deep Forensics:</strong> Custom dashboarding and long-term data retention for enterprise forensic queries.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab 2: Inspector -->
-    <div id="tab-vuln" class="tab-pane">
-      <div class="grid-4">
-        <div class="qalea-card">
-          <div class="card-title">EC2 Instance Scanning</div>
-          <p>Automated software vulnerability (CVE) discovery with zero agent overhead options.</p>
-        </div>
-        <div class="qalea-card">
-          <div class="card-title cyan">ECR Container Scanning</div>
-          <p>Scans container images on push and continuously monitors stored registry images.</p>
-        </div>
-        <div class="qalea-card">
-          <div class="card-title green">AWS Lambda Code</div>
-          <p>Scans serverless code and third-party package dependencies for vulnerabilities.</p>
-        </div>
-        <div class="qalea-card">
-          <div class="card-title">Contextual Risk Scoring</div>
-          <p>Intelligent risk scores based on real network accessibility and VPC routing analysis.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab 3: EDR GuardDuty -->
-    <div id="tab-edr" class="tab-pane">
-      <div class="grid-2">
-        <div class="qalea-card">
-          <div class="card-title">Continuous Threat Detection</div>
-          <ul>
-            <li><strong>Intelligent Stream Analysis:</strong> Uses ML and threat feeds to analyze CloudTrail, DNS, and S3 access logs.</li>
-            <li><strong>Anomaly Detection:</strong> Catches compromised credentials, data exfiltration, and unauthorized API calls.</li>
-          </ul>
-        </div>
-        <div class="qalea-card">
-          <div class="card-title green">GuardDuty Runtime Monitoring</div>
-          <ul>
-            <li><strong>EKS & Workload Scope:</strong> Lightweight EDR agent tracking container process spawning and socket connections.</li>
-            <li><strong>Attack Prevention:</strong> Detects reverse shell execution, privilege escalation, and unexpected binary behavior.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab 4: Config -->
-    <div id="tab-config" class="tab-pane">
-      <div class="grid-2">
-        <div class="qalea-card">
-          <div class="card-title">Continuous Resource Tracking</div>
-          <p>AWS Config records detailed configuration history of every asset and flags unauthorized changes violating IaC baselines.</p>
-        </div>
-        <div class="qalea-card">
-          <div class="card-title cyan">Common Compliance Rules</div>
-          <ul>
-            <li>Enforce S3 Bucket Private Access (Block public read/write).</li>
-            <li>Ensure MFA is enabled on root and privileged IAM accounts.</li>
-            <li>Verify EBS volume encryption at rest across all regions.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section 3: Interactive AWS Security Hub Console Mockup -->
-  <section id="hub-console">
-    <div class="section-header">
-      <h2>AWS SIEM Hub & Posture Center</h2>
-      <p>Interactive preview of normalized findings using OCSF schema standard.</p>
-    </div>
-
-    <div class="qalea-card" style="padding: 0; overflow: hidden; border-color: rgba(0, 240, 255, 0.2); margin-bottom: 1.5rem;">
-      <div style="background: rgba(15, 23, 42, 0.9); padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--card-border); display: flex; align-items: center; justify-content: space-between;">
-        <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; color: var(--accent-cyan); font-weight: 600;">
-          <span style="background: var(--aws-amber); color: #000; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 800;">AWS</span>
-          Security Hub &gt; <span id="hub-view-title" style="color: #fff;">Summary</span>
-        </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <button onclick="switchHubTab('summary')" id="btn-hub-summary" class="tab-btn" style="padding: 0.25rem 0.75rem; font-size: 0.75rem; background: rgba(0, 240, 255, 0.15); border-color: var(--accent-cyan);">Summary View</button>
-          <button onclick="switchHubTab('findings')" id="btn-hub-findings" class="tab-btn" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;">Findings View (20+)</button>
-        </div>
-      </div>
-
-      <div style="display: flex; min-height: 280px; background: rgba(7, 9, 14, 0.6);">
-        <div style="width: 180px; border-right: 1px solid var(--card-border); padding: 1rem 0.75rem; font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.5rem; background: rgba(18, 24, 38, 0.4);">
-          <div style="font-weight: 700; color: var(--text-muted); font-size: 0.7rem; letter-spacing: 0.5px;">DASHBOARD</div>
-          <div id="side-summary" style="color: var(--aws-amber); font-weight: 700; cursor: pointer;" onclick="switchHubTab('summary')">Summary</div>
-          <div style="color: var(--text-muted); cursor: pointer;">Threats</div>
-          <div style="color: var(--text-muted); cursor: pointer;">Exposure</div>
-          <div style="color: var(--text-muted); cursor: pointer;">Posture Management</div>
-          <div style="font-weight: 700; color: var(--text-muted); font-size: 0.7rem; letter-spacing: 0.5px; margin-top: 0.5rem;">INVENTORY</div>
-          <div id="side-findings" style="color: var(--text-muted); cursor: pointer;" onclick="switchHubTab('findings')">Findings</div>
-        </div>
-
-        <div style="flex: 1; padding: 1.25rem; overflow-x: auto;">
-          <div id="tab-summary-content" class="grid-3" style="gap: 1rem;">
-            <div style="background: rgba(18, 24, 38, 0.8); border: 1px solid var(--card-border); border-radius: 8px; padding: 1rem;">
-              <div style="font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">Threat Summary</div>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.75rem;">
-                <div style="background: rgba(255,77,77,0.15); border: 1px solid var(--alert-red); border-radius: 6px; padding: 0.4rem; text-align: center;">
-                  <span style="font-size: 0.65rem; color: var(--alert-red); font-weight: 800; display: block;">CRITICAL</span>
-                  <span style="font-size: 1.2rem; font-weight: 800;">2</span>
-                </div>
-                <div style="background: rgba(255,153,0,0.15); border: 1px solid var(--aws-amber); border-radius: 6px; padding: 0.4rem; text-align: center;">
-                  <span style="font-size: 0.65rem; color: var(--aws-amber); font-weight: 800; display: block;">HIGH</span>
-                  <span style="font-size: 1.2rem; font-weight: 800;">11</span>
-                </div>
-              </div>
-            </div>
-
-            <div style="background: rgba(18, 24, 38, 0.8); border: 1px solid var(--card-border); border-radius: 8px; padding: 1rem;">
-              <div style="font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">Exposure Summary</div>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.75rem;">
-                <div style="background: rgba(255,204,0,0.15); border: 1px solid #ffcc00; border-radius: 6px; padding: 0.4rem; text-align: center;">
-                  <span style="font-size: 0.65rem; color: #ffcc00; font-weight: 800; display: block;">MEDIUM</span>
-                  <span style="font-size: 1.2rem; font-weight: 800;">43</span>
-                </div>
-                <div style="background: rgba(0,240,255,0.15); border: 1px solid var(--accent-cyan); border-radius: 6px; padding: 0.4rem; text-align: center;">
-                  <span style="font-size: 0.65rem; color: var(--accent-cyan); font-weight: 800; display: block;">LOW</span>
-                  <span style="font-size: 1.2rem; font-weight: 800;">12</span>
-                </div>
-              </div>
-            </div>
-
-            <div style="background: rgba(18, 24, 38, 0.8); border: 1px solid var(--card-border); border-radius: 8px; padding: 1rem;">
-              <div style="font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">Security Coverage</div>
-              <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.75rem; margin-top: 0.5rem;">
-                <div>
-                  <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
-                    <span>Vulnerability Mgmt (Inspector)</span><span style="color: var(--success-green);">100%</span>
-                  </div>
-                  <div style="height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 2px;">
-                    <div style="width: 100%; height: 100%; background: var(--success-green); border-radius: 2px;"></div>
-                  </div>
-                </div>
-                <div>
-                  <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
-                    <span>Threat Detection (GuardDuty)</span><span style="color: var(--success-green);">100%</span>
-                  </div>
-                  <div style="height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 2px;">
-                    <div style="width: 100%; height: 100%; background: var(--success-green); border-radius: 2px;"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div class="grid-3" style="margin-top: 1rem;">
+        <a href="pages/security-hub.html" class="card-link">
+          <div class="card">
+            <div class="card-title">1. SIEM & Central Visibility</div>
+            <p>Aggregating, correlating, and analyzing log data across all accounts.</p>
           </div>
+        </a>
+        <a href="pages/inspector.html" class="card-link">
+          <div class="card">
+            <div class="card-title cyan">2. Vulnerability Management</div>
+            <p>Continuously scanning compute, containers, and code for CVEs and misconfigurations.</p>
+          </div>
+        </a>
+        <a href="pages/guardduty.html" class="card-link">
+          <div class="card">
+            <div class="card-title green">3. EDR & Threat Detection</div>
+            <p>Real-time runtime monitoring and behavioral anomaly detection.</p>
+          </div>
+        </a>
+      </div>
+    </div>
 
-          <div id="tab-findings-content" style="display: none;">
-            <table style="font-size: 0.75rem; margin: 0;">
-              <thead>
-                <tr style="background: rgba(0,240,255,0.05);">
-                  <th>Finding Title (OCSF Standard)</th>
-                  <th>Severity</th>
-                  <th>Resource Target</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Hardware MFA should be enabled for the root user</td>
-                  <td><span style="background: rgba(255,77,77,0.2); color: var(--alert-red); border: 1px solid var(--alert-red); padding: 0.15rem 0.4rem; border-radius: 4px; font-weight: 700;">CRITICAL</span></td>
-                  <td style="color: var(--accent-cyan);">AWS:::Account:412381778777</td>
-                </tr>
-                <tr>
-                  <td>Password policies for IAM users should have strong configurations</td>
-                  <td><span style="background: rgba(255,153,0,0.2); color: var(--aws-amber); border: 1px solid var(--aws-amber); padding: 0.15rem 0.4rem; border-radius: 4px; font-weight: 700;">HIGH</span></td>
-                  <td style="color: var(--accent-cyan);">AWS:::Account:412381778777</td>
-                </tr>
-                <tr>
-                  <td>Ensure IAM password policy requires at least one number</td>
-                  <td><span style="background: rgba(255,204,0,0.2); color: #ffcc00; border: 1px solid #ffcc00; padding: 0.15rem 0.4rem; border-radius: 4px; font-weight: 700;">MEDIUM</span></td>
-                  <td style="color: var(--accent-cyan);">AWS:::Account:412381778777</td>
-                </tr>
-              </tbody>
-            </table>
+    <!-- Slide 3 -->
+    <div class="slide">
+      <h2>AWS SIEM Part 1: AWS Security Hub</h2>
+      <a href="pages/security-hub.html" class="card-link">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Features</div>
+            <ul>
+              <li><strong>Single Pane of Glass:</strong> Collects, normalizes, and aggregates alerts across multi-account AWS environments.</li>
+              <li><strong>Automated Standards:</strong> Evaluates accounts against CIS Benchmarks and PCI-DSS automatically.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title cyan">Value to Squads</div>
+            <ul>
+              <li>Eliminates context-switching between disparate third-party vendor consoles.</li>
+              <li>Standardizes alert formatting using AWS Security Finding Format (ASFF).</li>
+              <li>Compliance Mapping: ISO 27001 / SOC 2 Continuous Audit Readiness.</li>
+            </ul>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide">
+      <h2>AWS SIEM Part 2: Amazon Detective & OpenSearch SIEM</h2>
+      <a href="pages/detective-opensearch.html" class="card-link">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Amazon Detective</div>
+            <ul>
+              <li><strong>Root-Cause Analysis:</strong> Automatically maps complex event chains across VPC Flow Logs, CloudTrail, and GuardDuty.</li>
+              <li><strong>Graph-Based Visualization:</strong> Visualizes relationships between compromised IP addresses, IAM roles, and EC2 instances.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title cyan">SIEM on AWS OpenSearch</div>
+            <ul>
+              <li><strong>Open-Source Solution:</strong> AWS-published architecture for full custom log ingestion.</li>
+              <li><strong>Deep Correlation:</strong> Custom dashboarding and long-term retention for enterprise forensic queries.</li>
+            </ul>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide">
+      <h2>Continuous Vulnerability Scanning: Amazon Inspector</h2>
+      <a href="pages/inspector.html" class="card-link">
+        <div class="grid-4">
+          <div class="card">
+            <div class="card-title">EC2 Instance Scanning</div>
+            <p>Automated software vulnerability (CVE) discovery with zero agent overhead option.</p>
+          </div>
+          <div class="card">
+            <div class="card-title cyan">ECR Container Scanning</div>
+            <p>Scans container images on push and continuously monitors registries.</p>
+          </div>
+          <div class="card">
+            <div class="card-title green">AWS Lambda Functions</div>
+            <p>Scans serverless code and third-party package dependencies for vulnerabilities.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">Intelligent Risk Scoring</div>
+            <p>Contextualized risk scores based on real network accessibility (VPC route analysis).</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide">
+      <h2>Continuous Compliance Monitoring: AWS Config</h2>
+      <a href="pages/config.html" class="card-link">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">How It Works</div>
+            <ul>
+              <li><strong>Continuous Resource Tracking:</strong> Records detailed configuration history of every AWS asset.</li>
+              <li><strong>Drift Detection:</strong> Flags unauthorized changes that violate infrastructure-as-code baseline.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title cyan">Common Rules</div>
+            <ul>
+              <li>Rule: Enforce S3 Bucket Private Access (Block public read/write).</li>
+              <li>Rule: Ensure MFA enabled on root and privileged IAM accounts.</li>
+              <li>Rule: Verify EBS volume encryption at rest.</li>
+            </ul>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="slide">
+      <h2>EDR & Continuous Threat Detection: Amazon GuardDuty</h2>
+      <a href="pages/guardduty.html" class="card-link">
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">Intelligent Analysis</div>
+            <p>Uses Machine Learning and threat intelligence to analyze AWS data streams.</p>
+          </div>
+          <div class="card">
+            <div class="card-title cyan">Multi-Layer Coverage</div>
+            <p>Monitors CloudTrail events, VPC Flow Logs, DNS logs, S3 access, and IAM activity.</p>
+          </div>
+          <div class="card">
+            <div class="card-title green">Anomaly Detection</div>
+            <p>Catches compromised credentials, data exfiltration, and unauthorized API calls in real time.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Slide 8 -->
+    <div class="slide">
+      <h2>Advanced Threat Defense: GuardDuty Runtime Monitoring</h2>
+      <a href="pages/runtime-monitoring.html" class="card-link">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Scope</div>
+            <ul>
+              <li><strong>EKS & Kubernetes:</strong> Monitors container-level runtime file, process, and network connections.</li>
+              <li><strong>EC2 & Serverless:</strong> Lightweight runtime monitoring agent tracking operating system behavior.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title cyan">Capability</div>
+            <ul>
+              <li>Detects reverse shell execution, privilege escalation, and unauthorized process spawning inside containers.</li>
+              <li>Operates as a native lightweight EDR agent without heavy performance overhead.</li>
+            </ul>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide">
+      <h2>The Integrated AWS Security Stack Workflow</h2>
+      <div class="flow-steps">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div>
+            <div class="card-title green">Stage 1 (Proactive Defense)</div>
+            <p>Amazon Inspector continuously scans EC2/ECR for CVEs and flags unpatched exposure.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div>
+            <div class="card-title red">Stage 2 (Threat Detection)</div>
+            <p>Amazon GuardDuty catches an active exploitation attempt or suspicious connection in real time.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div>
+            <div class="card-title cyan">Stage 3 (Central Response)</div>
+            <p>AWS Security Hub correlates both findings into one high-priority ticket for SOC action.</p>
           </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Section 4: Operational Workflows & Incident Response -->
-  <section id="workflows">
-    <div class="section-header">
-      <h2>Operational Lifecycle & Incident Response</h2>
-      <p>End-to-end automated detection, correlation, and remediation.</p>
-    </div>
-
-    <div class="grid-2">
-      <div>
-        <h3 style="margin-bottom: 1.5rem; color: var(--aws-amber);">Integrated Security Workflow</h3>
-        <div class="flow-chain">
-          <div class="flow-step">
-            <div class="step-badge">1</div>
-            <div>
-              <div class="card-title green" style="font-size: 1rem;">Proactive Defense</div>
-              <p style="font-size: 0.85rem;">Amazon Inspector continuously scans EC2/ECR for software vulnerabilities and flags unpatched exposure.</p>
-            </div>
-          </div>
-          <div class="flow-step">
-            <div class="step-badge">2</div>
-            <div>
-              <div class="card-title red" style="font-size: 1rem;">Threat Detection</div>
-              <p style="font-size: 0.85rem;">GuardDuty catches active exploitation attempts or anomalous network connections in real time.</p>
-            </div>
-          </div>
-          <div class="flow-step">
-            <div class="step-badge">3</div>
-            <div>
-              <div class="card-title cyan" style="font-size: 1rem;">Central Response</div>
-              <p style="font-size: 0.85rem;">Security Hub correlates both findings into a single prioritized ticket for immediate SOC action.</p>
-            </div>
-          </div>
+    <!-- Slide 10 -->
+    <div class="slide">
+      <h2>Incident Investigation Lifecycle in AWS</h2>
+      <div class="flow-steps">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <p><strong>Step 1 (Alerting):</strong> GuardDuty flags unauthorized API call from an unknown foreign IP.</p>
         </div>
-      </div>
-
-      <div>
-        <h3 style="margin-bottom: 1.5rem; color: var(--accent-cyan);">4-Step Incident Lifecycle</h3>
-        <div class="flow-chain">
-          <div class="flow-step">
-            <div class="step-badge">1</div>
-            <div>
-              <div class="card-title" style="font-size: 1rem;">Alerting</div>
-              <p style="font-size: 0.85rem;">GuardDuty flags unauthorized API call originating from an unrecognized foreign IP.</p>
-            </div>
-          </div>
-          <div class="flow-step">
-            <div class="step-badge">2</div>
-            <div>
-              <div class="card-title" style="font-size: 1rem;">Aggregation</div>
-              <p style="font-size: 0.85rem;">Security Hub ingests alert, applies severity score, and triggers EventBridge rule.</p>
-            </div>
-          </div>
-          <div class="flow-step">
-            <div class="step-badge">3</div>
-            <div>
-              <div class="card-title" style="font-size: 1rem;">Investigation</div>
-              <p style="font-size: 0.85rem;">Engineer opens Amazon Detective to visualize blast radius and impacted IAM roles.</p>
-            </div>
-          </div>
-          <div class="flow-step">
-            <div class="step-badge">4</div>
-            <div>
-              <div class="card-title green" style="font-size: 1rem;">Remediation</div>
-              <p style="font-size: 0.85rem;">Automated AWS Lambda function revokes compromised IAM session keys instantly.</p>
-            </div>
-          </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <p><strong>Step 2 (Aggregation):</strong> Security Hub ingests alert, applies severity score, and triggers EventBridge rule.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <p><strong>Step 3 (Investigation):</strong> Engineer opens Amazon Detective to visualize historical API activity and blasted IAM role.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <p><strong>Step 4 (Remediation):</strong> Automated AWS Lambda function revokes compromised IAM session keys instantly.</p>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Section 5: Role-Based Operations Matrix -->
-  <section id="matrix">
-    <div class="section-header">
+    <!-- Slide 11 -->
+    <div class="slide">
       <h2>Role-Based Operations: Who Does What?</h2>
-      <p>Operational clarity for IT Project Managers, DevOps Leads, and SOC Engineers.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Daily AWS Security Duty</th>
+            <th>Key Tool Used</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DevOps & Engineers</strong></td>
+            <td>Patch CVEs, fix container dependencies, resolve configuration drift</td>
+            <td>Amazon Inspector & AWS Config</td>
+          </tr>
+          <tr>
+            <td><strong>Project Managers & POs</strong></td>
+            <td>Track compliance posture, prioritize security tech debt</td>
+            <td>AWS Security Hub Dashboards</td>
+          </tr>
+          <tr>
+            <td><strong>SOC & Incident Handlers</strong></td>
+            <td>Investigate active alerts, conduct root-cause forensics</td>
+            <td>GuardDuty & Amazon Detective</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Role</th>
-          <th>Daily AWS Security Duty</th>
-          <th>Key Native Tool Used</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>DevOps & System Engineers</strong></td>
-          <td>Patch CVEs, fix container dependencies, and resolve infrastructure drift.</td>
-          <td>Amazon Inspector & AWS Config</td>
-        </tr>
-        <tr>
-          <td><strong>Project Managers & POs</strong></td>
-          <td>Track compliance posture, prioritize security debt, and verify audit readiness.</td>
-          <td>AWS Security Hub Dashboards</td>
-        </tr>
-        <tr>
-          <td><strong>SOC & Incident Handlers</strong></td>
-          <td>Investigate active threat alerts, conduct root-cause forensics, and refine response scripts.</td>
-          <td>Amazon GuardDuty & Amazon Detective</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- Section 6: Real-World Attack Scenarios -->
-  <section id="scenarios">
-    <div class="section-header">
-      <h2>Real-World Attack Scenarios & Native Defense</h2>
-      <p>Comparing attacker execution chains against automated AWS native defenses.</p>
-    </div>
-
-    <div class="grid-2" style="margin-bottom: 2rem;">
-      <div class="qalea-card">
-        <div class="card-title red">Scenario 1: S3 Bucket Data Exfiltration</div>
-        <p><strong>Attack Chain:</strong> Malicious actor steals exposed IAM key from developer repo &rarr; Scans S3 buckets &rarr; Downloads customer datasets.</p>
-      </div>
-      <div class="qalea-card">
-        <div class="card-title green">AWS Native Defense Response</div>
-        <p>GuardDuty detects anomalous data access from unknown IP &rarr; Security Hub raises critical ticket &rarr; AWS Config detects S3 policy drift and triggers automated access revoking.</p>
+    <!-- Slide 12 -->
+    <div class="slide">
+      <h2>Real-World Attack Scenario: S3 Bucket Exfiltration</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title red">Attack Chain</div>
+          <p>Malicious actor steals exposed IAM access key from developer repository $\rightarrow$ Scans S3 buckets $\rightarrow$ Begins downloading sensitive customer datasets.</p>
+        </div>
+        <div class="card">
+          <div class="card-title green">AWS Native Response</div>
+          <p>GuardDuty detects unusual data access pattern from unrecognized IP $\rightarrow$ Security Hub raises critical alert $\rightarrow$ AWS Config detects S3 policy modification.</p>
+        </div>
       </div>
     </div>
 
-    <div class="grid-2">
-      <div class="qalea-card">
-        <div class="card-title red">Scenario 2: EKS Container Compromise</div>
-        <p><strong>Attack Chain:</strong> Unpatched web application vulnerability &rarr; Attacker executes remote code inside EKS pod &rarr; Spawns crypto-miner binary.</p>
+    <!-- Slide 13 -->
+    <div class="slide">
+      <h2>Real-World Attack Scenario: Container Compromise</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title red">Attack Chain</div>
+          <p>Unpatched application vulnerability exposed to internet $\rightarrow$ Attacker gains remote code execution on EKS pod $\rightarrow$ Spawns crypto-miner.</p>
+        </div>
+        <div class="card">
+          <div class="card-title green">AWS Native Response</div>
+          <p>Inspector flagged unpatched CVE during build phase $\rightarrow$ GuardDuty Runtime Monitoring detects unauthorized binary execution inside container pod in real time.</p>
+        </div>
       </div>
-      <div class="qalea-card">
-        <div class="card-title green">AWS Native Defense Response</div>
-        <p>Inspector flags unpatched CVE during build &rarr; GuardDuty Runtime Monitoring catches unauthorized process execution inside pod in real time &rarr; Pod is isolated automatically.</p>
+    </div>
+
+    <!-- Slide 14 -->
+    <div class="slide">
+      <h2>Business Value: Native Stack vs. Third-Party Agents</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title red">Third-Party Tool Sprawl</div>
+          <p>Complex agent installation, licensing overhead, multiple vendor consoles, heavy performance impact on EC2.</p>
+        </div>
+        <div class="card">
+          <div class="card-title green">AWS Native Advantage</div>
+          <p>Agentless options, one-click enablement, unified ASFF data format, native integration with AWS EventBridge & Lambda.</p>
+        </div>
       </div>
     </div>
-  </section>
 
-  <!-- Section 7: Standards, Compliance & Takeaways -->
-  <section>
-    <div class="section-header">
-      <h2>Standards Mapping & Squad Best Practices</h2>
-      <p>Continuous compliance readiness without manually generated audit paperwork.</p>
+    <!-- Slide 15 -->
+    <div class="slide">
+      <h2>Standards & Compliance Mapping</h2>
+      <div class="badge-container" style="margin-top: 1.5rem;">
+        <div class="badge">ISO/IEC 27001: Continuous evidence gathering via Security Hub automated checks</div>
+        <div class="badge">SOC 2 Type II: Audit-ready evaluation of data confidentiality and configuration tracking (AWS Config)</div>
+        <div class="badge">CIS AWS Foundations Benchmark: Pre-packaged automated scanning rules built into Security Hub</div>
+        <div class="badge">NIST CSF v2.0: Integrated lifecycle coverage across Identify, Detect, Respond, and Protect functions</div>
+      </div>
     </div>
 
-    <div class="badge-grid" style="justify-content: center; margin-bottom: 3rem;">
-      <div class="framework-badge">ISO/IEC 27001: Continuous evidence gathering via Security Hub</div>
-      <div class="framework-badge">SOC 2 Type II: Continuous tracking via AWS Config</div>
-      <div class="framework-badge">CIS AWS Foundations: Pre-packaged automated scanning rules</div>
-      <div class="framework-badge">NIST CSF v2.0: Full lifecycle (Identify, Detect, Respond, Protect)</div>
+    <!-- Slide 16 -->
+    <div class="slide">
+      <h2>Training Summary & Best Practices for Squads</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title cyan">Key Takeaways</div>
+          <ul>
+            <li><strong>1. Centralize visibility:</strong> Turn on Security Hub across all organizational accounts.</li>
+            <li><strong>2. Scan continuously:</strong> Use Inspector to catch vulnerabilities *before* code reaches production.</li>
+            <li><strong>3. Automate response:</strong> Connect GuardDuty findings to automated EventBridge remediation actions.</li>
+            <li><strong>4. Investigate fast:</strong> Use Amazon Detective to trace root causes in minutes, not days.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title green">Call to Action & Q&A</div>
+          <p style="font-size: 1.2rem; margin-bottom: 1rem;">"Cloud security is an ongoing automated operational rhythm."</p>
+          <p><strong>Questions & Answers Prompt Banner</strong></p>
+        </div>
+      </div>
     </div>
 
-    <div class="qalea-card" style="text-align: center; border-color: var(--accent-cyan); padding: 3rem;">
-      <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">"Cloud security is an ongoing automated operational rhythm, not a point-in-time audit."</h3>
-      <p style="color: var(--text-muted); max-width: 700px; margin: 0 auto;">Centralize visibility, scan early in CI/CD pipelines, automate remediation with EventBridge, and investigate root causes in minutes with Amazon Detective.</p>
-    </div>
-  </section>
+  </div>
 
-  <footer>
-    <p>Demystifying AWS Native Security &copy; 2026. Built with Qalea AI Design System Aesthetics.</p>
-  </footer>
-
-  <!-- Scripts -->
   <script>
-    function openTab(evt, tabName) {
-      const tabPanes = document.querySelectorAll('.tab-pane');
-      const tabBtns = document.querySelectorAll('.tab-btn');
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const slideNumDisplay = document.getElementById('slideNum');
 
-      tabPanes.forEach(pane => pane.classList.remove('active'));
-      tabBtns.forEach(btn => btn.classList.remove('active'));
-
-      document.getElementById(tabName).classList.add('active');
-      evt.currentTarget.classList.add('active');
+    function updateSlide() {
+      slides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === currentSlide);
+      });
+      slideNumDisplay.textContent = `${currentSlide + 1} / ${slides.length}`;
     }
 
-    function switchHubTab(tab) {
-      const summaryContent = document.getElementById('tab-summary-content');
-      const findingsContent = document.getElementById('tab-findings-content');
-      const btnSummary = document.getElementById('btn-hub-summary');
-      const btnFindings = document.getElementById('btn-hub-findings');
-      const title = document.getElementById('hub-view-title');
-      const sideSummary = document.getElementById('side-summary');
-      const sideFindings = document.getElementById('side-findings');
+    function changeSlide(direction) {
+      currentSlide = (currentSlide + direction + slides.length) % slides.length;
+      updateSlide();
+    }
 
-      if (tab === 'summary') {
-        summaryContent.style.display = 'grid';
-        findingsContent.style.display = 'none';
-        btnSummary.style.background = 'rgba(0, 240, 255, 0.15)';
-        btnSummary.style.borderColor = 'var(--accent-cyan)';
-        btnFindings.style.background = 'rgba(255, 255, 255, 0.03)';
-        btnFindings.style.borderColor = 'var(--card-border)';
-        title.textContent = 'Summary';
-        sideSummary.style.color = 'var(--aws-amber)';
-        sideSummary.style.fontWeight = '700';
-        sideFindings.style.color = 'var(--text-muted)';
-        sideFindings.style.fontWeight = 'normal';
-      } else {
-        summaryContent.style.display = 'none';
-        findingsContent.style.display = 'block';
-        btnFindings.style.background = 'rgba(0, 240, 255, 0.15)';
-        btnFindings.style.borderColor = 'var(--accent-cyan)';
-        btnSummary.style.background = 'rgba(255, 255, 255, 0.03)';
-        btnSummary.style.borderColor = 'var(--card-border)';
-        title.textContent = 'Findings (20+)';
-        sideFindings.style.color = 'var(--aws-amber)';
-        sideFindings.style.fontWeight = '700';
-        sideSummary.style.color = 'var(--text-muted)';
-        sideSummary.style.fontWeight = 'normal';
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft') {
+        changeSlide(-1);
       }
-    }
+    });
   </script>
 </body>
 </html>
